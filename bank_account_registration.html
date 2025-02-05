@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>口座登録フォーム</title>
+</head>
+<body>
+    <h1>口座登録フォーム</h1>
+    <form id="accountForm">
+        <label for="memberID">会員ID:</label>
+        <input type="text" id="memberID" name="memberID" required><br><br>
+
+        <label for="memberName">会員名:</label>
+        <input type="text" id="memberName" name="memberName" required><br><br>
+
+        <label for="accountNumber">口座番号:</label>
+        <input type="text" id="accountNumber" name="accountNumber" required><br><br>
+
+        <label for="accountName">口座名義（カナ）:</label>
+        <input type="text" id="accountName" name="accountName" required><br><br>
+
+        <label for="bankCode">金融機関コード:</label>
+        <input type="text" id="bankCode" name="bankCode" required><br><br>
+
+        <label for="branchCode">支店コード:</label>
+        <input type="text" id="branchCode" name="branchCode" required><br><br>
+
+        <button type="submit">登録する</button>
+    </form>
+
+    <script>
+        document.getElementById('accountForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = {
+                memberID: document.getElementById('memberID').value,
+                memberName: document.getElementById('memberName').value,
+                accountNumber: document.getElementById('accountNumber').value,
+                accountName: document.getElementById('accountName').value,
+                bankCode: document.getElementById('bankCode').value,
+                branchCode: document.getElementById('branchCode').value
+            };
+
+            fetch('https://your-netlify-site.netlify.app/.netlify/functions/registerBankAccount', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('APIレスポンス:', data);
+                alert('口座登録が完了しました！');
+            })
+            .catch(error => {
+                console.error('APIエラー:', error);
+                alert('口座登録に失敗しました。');
+            });
+        });
+    </script>
+</body>
+</html>
